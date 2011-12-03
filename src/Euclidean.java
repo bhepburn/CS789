@@ -1,6 +1,4 @@
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Euclidean {
 
@@ -14,60 +12,34 @@ public class Euclidean {
 	}
 
 	public static BigInteger[] extendedEuclidean(BigInteger x, BigInteger y) {
-		List<BigInteger> vals = new ArrayList<BigInteger>();
-		if (x.compareTo(y) == 1) {
+		BigInteger[] vals = new BigInteger[2];
+		if (y.compareTo(x) == 1) {
 			recurseEuclidean(x, y, vals);
+			return vals;
 		} else {
 			recurseEuclidean(y, x, vals);
+			// Need to swap because x is larger
+			return new BigInteger[] { vals[1], vals[0] };
 		}
-		
-		int[] result;
-		if (x.compareTo(y) == 1) {
-			result = ExtendedEuclid(x.intValue(), y.intValue());
-		} else {
-			result = ExtendedEuclid(y.intValue(), x.intValue());
-		}
-		
-		return new BigInteger[] {BigInteger.valueOf(result[1]), BigInteger.valueOf(result[2])};
 	}
 
 	private static BigInteger recurseEuclidean(BigInteger x, BigInteger y,
-			List<BigInteger> vals) {
-		BigInteger divisor = x.divide(y);
-		BigInteger dividend = x.mod(y);
+			BigInteger[] vals) {
 
-		if (dividend.equals(BigInteger.ZERO)) {
-			vals.add(BigInteger.ONE);
-			vals.add(BigInteger.ZERO);
-			return y;
-		} else {
-			BigInteger ans = recurseEuclidean(y, dividend, vals);
+		if (y.equals(BigInteger.ZERO)) {
 			if (vals != null) {
-				BigInteger result = vals.get(0).subtract(
-						divisor.multiply(vals.get(1)));
-				vals.set(0, vals.get(1));
-				vals.set(1, result);
+				vals[0] = BigInteger.ONE;
+				vals[1] = BigInteger.ZERO;
 			}
-			return ans;
-		}
-	}
-
-	public static int[] ExtendedEuclid(int a, int b) {
-		int[] ans = new int[3];
-		int q;
-
-		if (b == 0) { /* If b = 0, then we're done... */
-			ans[0] = a;
-			ans[1] = 1;
-			ans[2] = 0;
-		} else { /* Otherwise, make a recursive function call */
-			q = a / b;
-			ans = ExtendedEuclid(b, a % b);
-			int temp = ans[1] - ans[2] * q;
-			ans[1] = ans[2];
-			ans[2] = temp;
+			return x;
 		}
 
+		BigInteger ans = recurseEuclidean(y, x.mod(y), vals);
+		if (vals != null) {
+			BigInteger temp = vals[0].subtract(x.divide(y).multiply(vals[1]));
+			vals[0] = vals[1];
+			vals[1] = temp;
+		}
 		return ans;
 	}
 }

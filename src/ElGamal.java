@@ -3,38 +3,46 @@ import java.math.BigInteger;
 public class ElGamal {
 
 	private BigInteger p;
-	private BigInteger r;
+	private BigInteger privateKey;
 
 	public ElGamal() {
 
 	}
 
 	public void setCyclicGroup(BigInteger p) throws Exception {
-		if (!Util.isPrime(p))
+		if (!Util.isPrimeBruteForce(p))
 			throw new Exception("Value is not prime!");
 		this.p = p;
 	}
 
-	public void setPrivateInformation(BigInteger r) {
-		this.r = r;
+	public void setPrivateInformation(BigInteger privateKey) {
+		this.privateKey = privateKey;
 	}
 
 	public BigInteger[] getPublicInformation() {
 		BigInteger primitiveRoot = PrimitiveRootSearch.primitiveRootSearch(p);
-		BigInteger primitiveRootR = r.pow(primitiveRoot.intValue());
-		return new BigInteger[] { primitiveRoot, primitiveRootR };
-	}
-	
-	public BigInteger encryptValue(BigInteger[] publicInformation, BigInteger value){
-		BigInteger primitiveRootL = publicInformation[1];
-		return value.multiply(primitiveRootL.pow(r.intValue()));
-	}
-	
-	public BigInteger decryptValue(BigInteger[] publicInformation, BigInteger value){
-		BigInteger primitiveRootR = publicInformation[1];
-		BigInteger primitiveRootRL = primitiveRootR.pow(r.intValue());
-		BigInteger inverse = Euclidean.extendedEuclidean(primitiveRootRL, p)[0];
-		return inverse.multiply(value).mod(p);
+		BigInteger publicKey = FastExponentiation.fastExponentiation(
+				primitiveRoot, privateKey, p);
+		return new BigInteger[] { primitiveRoot, publicKey };
 	}
 
+	public BigInteger encryptValue(BigInteger[] publicInformation, String msg)
+			throws Exception {
+		BigInteger val = Util.convertStringToBigInt(msg);
+		if (val.compareTo(p) != -1) {
+			throw new Exception("Message too large for public key!");
+		}
+
+		BigInteger publicKey = publicInformation[1];
+		BigInteger encryptionKey = FastExponentiation.fastExponentiation(
+				publicKey, privateKey, p);
+		return val.multiply(encryptionKey).mod(p);
+	}
+
+	public String decryptValue(BigInteger[] publicInformation, BigInteger msg) {
+		BigInteger publicKey = publicInformation[1];
+		BigInteger decryptionKey = FastExponentiation.fastExponentiation(
+				publicKey, p.subtract(BigInteger.ONE).subtract(privateKey), p);
+		return Util.convertBigIntToString(msg.multiply(decryptionKey).mod(p));
+	}
 }

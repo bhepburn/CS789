@@ -36,24 +36,25 @@ public class Test {
 		// e.printStackTrace();
 		// }
 
-		ElGamal elGamal = new ElGamal();
-		ElGamal elGamal2 = new ElGamal();
-		try {
-			elGamal.setCyclicGroup(BigInteger.valueOf(113));
-			elGamal.setPrivateInformation(BigInteger.valueOf(41));
-			
-			elGamal2.setCyclicGroup(BigInteger.valueOf(113));
-			elGamal2.setPrivateInformation(BigInteger.valueOf(67));
-			
-			BigInteger[] publicInfo1 = elGamal.getPublicInformation();
-			BigInteger[] publicInfo2 = elGamal.getPublicInformation();
-			
-			BigInteger encryptedValue = elGamal.encryptValue(publicInfo2, BigInteger.valueOf(10));
-			BigInteger decryptedValue = elGamal2.decryptValue(publicInfo1, BigInteger.valueOf(10));
-			System.out.println(encryptedValue);
-			System.out.println(decryptedValue);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		// ElGamal elGamal = new ElGamal();
+		// ElGamal elGamal2 = new ElGamal();
+		// try {
+		// elGamal.setCyclicGroup(BigInteger.valueOf(150001));
+		// elGamal.setPrivateInformation(BigInteger.valueOf(113));
+		//
+		// elGamal2.setCyclicGroup(BigInteger.valueOf(150001));
+		// elGamal2.setPrivateInformation(BigInteger.valueOf(1000));
+		//
+		// BigInteger[] publicInfo1 = elGamal.getPublicInformation();
+		// BigInteger[] publicInfo2 = elGamal2.getPublicInformation();
+		//
+		// BigInteger encryptedValue = elGamal2.encryptValue(publicInfo1,
+		// BigInteger.valueOf(809));
+		// BigInteger decryptedValue = elGamal.decryptValue(publicInfo2,
+		// encryptedValue);
+		// System.out.println(decryptedValue);
+		// } catch (Exception e) {
+		// e.printStackTrace();
+		// }
 	}
 }
