@@ -10,7 +10,7 @@ public class ElGamal {
 	}
 
 	public void setCyclicGroup(BigInteger p) throws Exception {
-		if (!Util.isPrimeBruteForce(p))
+		if (MillerRabin.testStrongPrime(p))
 			throw new Exception("Value is not prime!");
 		this.p = p;
 	}

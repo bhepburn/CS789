@@ -1,7 +1,7 @@
 import java.math.BigInteger;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
+import java.util.Set;
 
 public class PrimitiveRootSearch {
 
@@ -31,8 +31,9 @@ public class PrimitiveRootSearch {
 		return true;
 	}
 
-	private static List<BigInteger> findPrimeFactors(BigInteger n) {
-		List<BigInteger> factors = new ArrayList<BigInteger>();
+	private static Set<BigInteger> findPrimeFactors(BigInteger n) {
+		// Set is unique
+		Set<BigInteger> factors = new HashSet<BigInteger>();
 		for (long i = 2; i <= n.longValue(); i++) {
 			BigInteger y = BigInteger.valueOf(i);
 			while (n.mod(y).equals(BigInteger.ZERO)) {

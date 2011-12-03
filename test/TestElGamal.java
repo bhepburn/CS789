@@ -9,6 +9,7 @@ public class TestElGamal {
 	@Test
 	public void testElGamal() {
 		try {
+			String msg = "Hi";
 			ElGamal elGamal = new ElGamal();
 			elGamal.setCyclicGroup(BigInteger.valueOf(150001));
 			elGamal.setPrivateInformation(BigInteger.valueOf(113));
@@ -20,13 +21,11 @@ public class TestElGamal {
 			BigInteger[] publicInfo1 = elGamal.getPublicInformation();
 			BigInteger[] publicInfo2 = elGamal2.getPublicInformation();
 
-			BigInteger encryptedValue = elGamal2
-					.encryptValue(publicInfo1, "Hi");
+			BigInteger encryptedValue = elGamal2.encryptValue(publicInfo1, msg);
 			String decryptedValue = elGamal.decryptValue(publicInfo2,
 					encryptedValue);
-			assertEquals("Hi", decryptedValue);
+			assertEquals(msg, decryptedValue);
 		} catch (Exception e) {
-			e.printStackTrace();
 			assert (false);
 		}
 	}
