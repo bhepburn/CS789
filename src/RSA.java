@@ -14,7 +14,7 @@ public class RSA extends CryptographyMethod {
 
 		// e needs to be relatively prime to phi(n)
 		do {
-			// Find an encryption key between 1 and n (no inclusive)
+			// Find an encryption key between 1 and n inclusive
 			e = Util.randomBigInteger(Util.TWO, n.subtract(BigInteger.ONE));
 		} while (!Euclidean.euclidean(e, phiOfN()).equals(BigInteger.ONE));
 	}

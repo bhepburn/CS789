@@ -6,7 +6,7 @@ public class Util {
 	public static final BigInteger TWO = BigInteger.valueOf(2);
 	public static final BigInteger THREE = BigInteger.valueOf(3);
 	public static final BigInteger FOUR = BigInteger.valueOf(4);
-	
+
 	private static final SecureRandom rand = new SecureRandom();
 
 	public static boolean isPrimeBruteForce(BigInteger n) {
@@ -49,5 +49,9 @@ public class Util {
 			r = new BigInteger(max.bitLength(), rand);
 		} while (r.compareTo(min) <= 0 || r.compareTo(max) >= 0);
 		return r;
+	}
+
+	public static BigInteger randomBigInteger(int bitSize) {
+		return new BigInteger(bitSize, rand);
 	}
 }

@@ -5,9 +5,9 @@ import java.util.Set;
 
 public class PrimitiveRootSearch {
 
-	public static BigInteger primitiveRootSearch(BigInteger p) {
-		if (p == null)
-			return null;
+	public static BigInteger primitiveRootSearch(BigInteger p) throws Exception {
+		if (p == null || !MillerRabin.testStrongPrime(p))
+			throw new Exception("Invalid p for primitive root search");
 
 		// Find prime factors of p-1 once
 		BigInteger n = p.subtract(BigInteger.ONE);
@@ -15,13 +15,12 @@ public class PrimitiveRootSearch {
 
 		// Now look for a primitive root starting at 2
 		// May need to change this to be random
-		for (long i = 2; i < p.longValue(); i++) {
-			BigInteger g = BigInteger.valueOf(i);
-			if (checkPrimitiveRoot(g, p, n, factors)) {
-				return g;
-			}
-		}
-		return null;
+		BigInteger g = null;
+		do {
+			g = Util.randomBigInteger(Util.TWO, n.subtract(BigInteger.ONE));
+		} while (!checkPrimitiveRoot(g, p, n, factors));
+
+		return g;
 	}
 
 	private static boolean checkPrimitiveRoot(BigInteger g, BigInteger p,

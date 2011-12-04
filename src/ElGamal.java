@@ -7,7 +7,7 @@ public class ElGamal extends CryptographyMethod {
 	private BigInteger cyclicGroup, primitiveRoot, privateKey, publicKey,
 			sharedKey;
 
-	public ElGamal() {
+	public ElGamal() throws Exception {
 		cyclicGroup = BlumBlumShub.randomNumber();
 
 		do {
@@ -103,7 +103,7 @@ public class ElGamal extends CryptographyMethod {
 			input = in.readLine();
 
 			// Encrypt and provide message and public key
-			System.out.print("\nPublic key = " + publicKey );
+			System.out.print("\nPublic key = " + publicKey);
 			System.out.println("\nEncrypted Message = " + encrypt(input));
 		} catch (IOException e) {
 			throw new Exception("Bad input");
@@ -151,16 +151,17 @@ public class ElGamal extends CryptographyMethod {
 	@Override
 	public void showPrivateInfo() {
 		System.out.println();
-		System.out.println("Private info:" + "\n\tl (private key)=" + privateKey);
+		System.out.println("Private info:" + "\n\tl (private key)="
+				+ privateKey);
 		System.out.println();
 	}
 
 	@Override
 	public void showPublicInfo() {
 		System.out.println();
-		System.out.println("Public info:" + "\n\tp (cyclic group)=" + cyclicGroup
-				+ "\n\tb (primitive root)=" + primitiveRoot + "\n\tmy public key="
-				+ publicKey);
+		System.out.println("Public info:" + "\n\tp (cyclic group)="
+				+ cyclicGroup + "\n\tb (primitive root)=" + primitiveRoot
+				+ "\n\tmy public key=" + publicKey);
 		System.out.println();
 	}
 }
