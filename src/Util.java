@@ -1,13 +1,13 @@
 import java.math.BigInteger;
-import java.util.Random;
+import java.security.SecureRandom;
 
 public class Util {
 
 	public static final BigInteger TWO = BigInteger.valueOf(2);
 	public static final BigInteger THREE = BigInteger.valueOf(3);
 	public static final BigInteger FOUR = BigInteger.valueOf(4);
-
-	private static Random rand = new Random();
+	
+	private static final SecureRandom rand = new SecureRandom();
 
 	public static boolean isPrimeBruteForce(BigInteger n) {
 		if (n.mod(TWO).equals(BigInteger.ZERO))

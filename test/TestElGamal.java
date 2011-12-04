@@ -1,6 +1,5 @@
 import static org.junit.Assert.assertEquals;
-
-import java.math.BigInteger;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -9,24 +8,30 @@ public class TestElGamal {
 	@Test
 	public void testElGamal() {
 		try {
-			String msg = "Hi";
+			String msg = "12345";
 			ElGamal elGamal = new ElGamal();
-			elGamal.setCyclicGroup(BigInteger.valueOf(150001));
-			elGamal.setPrivateInformation(BigInteger.valueOf(113));
-
 			ElGamal elGamal2 = new ElGamal();
-			elGamal2.setCyclicGroup(BigInteger.valueOf(150001));
-			elGamal2.setPrivateInformation(BigInteger.valueOf(1000));
 
-			BigInteger[] publicInfo1 = elGamal.getPublicInformation();
-			BigInteger[] publicInfo2 = elGamal2.getPublicInformation();
+			// elGamal has chosen p & primitive root
+			// provide them to elGamal2
+			elGamal2.setPublicInfo(elGamal.getCyclicGroup(),
+					elGamal.getPrimitiveRoot());
 
-			BigInteger encryptedValue = elGamal2.encryptValue(publicInfo1, msg);
-			String decryptedValue = elGamal.decryptValue(publicInfo2,
-					encryptedValue);
+			// Exchange public keys
+			elGamal2.setSharedKey(elGamal.getPublicKey());
+			elGamal.setSharedKey(elGamal2.getPublicKey());
+
+			//Encrypt a message
+			String encryptedValue = elGamal2.encrypt(msg);
+			
+			//Decrypt the message
+			String decryptedValue = elGamal.decrypt(encryptedValue);
+			
+			// Verify the result
 			assertEquals(msg, decryptedValue);
 		} catch (Exception e) {
-			assert (false);
+			e.printStackTrace();
+			assertTrue(false);
 		}
 	}
 }

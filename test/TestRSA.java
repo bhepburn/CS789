@@ -1,4 +1,5 @@
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.math.BigInteger;
 
@@ -15,7 +16,7 @@ public class TestRSA {
 			BigInteger p = BigInteger.valueOf(937);
 			BigInteger q = BigInteger.valueOf(991);
 			rsa.setPrivateInfo(p, q);
-			rsa.setEncryptionKey(BigInteger.valueOf(19));
+			rsa.setEncryptionKey(BigInteger.valueOf(17));
 
 			RSA rsa2 = new RSA();
 			rsa2.setPublicInfo(rsa.getEncryptionKey(), rsa.getN());
@@ -29,7 +30,7 @@ public class TestRSA {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			assert (false);
+			assertTrue(false);
 		}
 	}
 
@@ -51,7 +52,7 @@ public class TestRSA {
 			assertEquals(message, decryptedMessage);
 		} catch (Exception e) {
 			e.printStackTrace();
-			assert (false);
+			assertTrue(false);
 		}
 	}
 }
