@@ -166,15 +166,20 @@ public class RSA extends CryptographyMethod {
 	}
 
 	@Override
+	public void attack(BufferedReader in) throws Exception {
+
+	}
+
+	@Override
 	public void showPrivateInfo() {
 		System.out.println();
-		System.out.println("Private info:" + "\n\tp=" + p + "\n\tq=" + q);
+		System.out.println("Private info:" + "\n\tp = " + p + "\n\tq = " + q);
 	}
 
 	@Override
 	public void showPublicInfo() {
 		System.out.println();
-		System.out.println("Public info:" + "\n\te (encryption key)=" + e
-				+ "\n\tn=" + n);
+		System.out.println("Public info:" + "\n\te (encryption key) = " + e
+				+ "\n\tn = " + n);
 	}
 }

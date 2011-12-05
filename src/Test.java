@@ -39,8 +39,8 @@ public class Test {
 			try {
 				System.out.print("\n" + method.getClass().getName()
 						+ ": Would you like to (1) encrypt, (2) decrypt, "
-						+ "(3) display private info, (4) show public info,"
-						+ " or (5) to exit? ");
+						+ "(3) display private info, (4) show public info, "
+						+ "(5) attack message, or (6) to exit? ");
 				String input = in.readLine();
 				int choice = Integer.parseInt(input);
 				if (choice == 1) {
@@ -52,6 +52,8 @@ public class Test {
 				} else if (choice == 4) {
 					method.showPublicInfo();
 				} else if (choice == 5) {
+					method.attack(in);
+				} else if (choice == 6) {
 					exit = true;
 				} else {
 					System.out.println("Invalid input!");

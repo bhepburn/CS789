@@ -106,8 +106,8 @@ public class ElGamal extends CryptographyMethod {
 			input = in.readLine();
 
 			// Encrypt and provide message and public key
-			System.out.print("\nPublic key = " + publicKey);
-			System.out.println("\nEncrypted Message = " + encrypt(input));
+			System.out.println("\nNew public key = " + publicKey);
+			System.out.println("Encrypted pessage = " + encrypt(input));
 		} catch (IOException e) {
 			throw new Exception("Bad input");
 		}
@@ -152,9 +152,50 @@ public class ElGamal extends CryptographyMethod {
 	}
 
 	@Override
+	public void attack(BufferedReader in) throws Exception {
+		try {
+			// Get value of n (modulus)
+			System.out.print("Enter p (cyclic group):");
+			String input = in.readLine();
+			BigInteger cyclicGroup = new BigInteger(input);
+
+			System.out.print("Enter b (primitive root):");
+			input = in.readLine();
+			BigInteger primitiveRoot = new BigInteger(input);
+
+			System.out.print("Enter shared public key:");
+			input = in.readLine();
+			BigInteger sharedKey = new BigInteger(input);
+
+			// Get the message
+			System.out.print("Enter in encrypted message: ");
+			input = in.readLine();
+
+			// Call baby-step giant-step algorithm
+			BigInteger privateKey = BabyStepGiantStep.babyStepGiantStep(
+					cyclicGroup, primitiveRoot, sharedKey);
+
+			if (privateKey != null) {
+				this.cyclicGroup = cyclicGroup;
+				this.primitiveRoot = primitiveRoot;
+				this.publicKey = sharedKey;
+				this.privateKey = privateKey;
+
+				System.out
+						.println("\nBest guess for private key = " + privateKey);
+				System.out.println("Best guess for message = " + decrypt(input));
+			} else {
+				System.out.println("Could not find private key");
+			}
+		} catch (IOException e) {
+			throw new Exception("Bad input");
+		}
+	}
+
+	@Override
 	public void showPrivateInfo() {
 		System.out.println();
-		System.out.println("Private info:" + "\n\tl (private key)="
+		System.out.println("Private info:" + "\n\tl (private key) = "
 				+ privateKey);
 		System.out.println();
 	}
@@ -162,9 +203,9 @@ public class ElGamal extends CryptographyMethod {
 	@Override
 	public void showPublicInfo() {
 		System.out.println();
-		System.out.println("Public info:" + "\n\tp (cyclic group)="
-				+ cyclicGroup + "\n\tb (primitive root)=" + primitiveRoot
-				+ "\n\tmy public key=" + publicKey);
+		System.out.println("Public info:" + "\n\tp (cyclic group) = "
+				+ cyclicGroup + "\n\tb (primitive root) = " + primitiveRoot
+				+ "\n\tmy public key = " + publicKey);
 		System.out.println();
 	}
 }
