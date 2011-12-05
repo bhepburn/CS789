@@ -21,12 +21,12 @@ public class TestElGamal {
 			elGamal2.setSharedKey(elGamal.getPublicKey());
 			elGamal.setSharedKey(elGamal2.getPublicKey());
 
-			//Encrypt a message
+			// Encrypt a message
 			String encryptedValue = elGamal2.encrypt(msg);
-			
-			//Decrypt the message
+
+			// Decrypt the message
 			String decryptedValue = elGamal.decrypt(encryptedValue);
-			
+
 			// Verify the result
 			assertEquals(msg, decryptedValue);
 		} catch (Exception e) {

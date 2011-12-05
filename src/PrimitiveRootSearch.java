@@ -13,13 +13,12 @@ public class PrimitiveRootSearch {
 		BigInteger n = p.subtract(BigInteger.ONE);
 		Set<BigInteger> factors = findPrimeFactors(n);
 
-		// Now look for a primitive root starting at 2
-		// May need to change this to be random
-		BigInteger g = null;
-		do {
-			g = Util.randomBigInteger(Util.TWO, n.subtract(BigInteger.ONE));
-		} while (!checkPrimitiveRoot(g, p, n, factors));
-
+		// Try to find the primitive root by starting at random number
+		BigInteger g = Util.randomBigInteger(Util.TWO,
+				n.subtract(BigInteger.ONE));
+		while (!checkPrimitiveRoot(g, p, n, factors)) {
+			g = g.add(BigInteger.ONE);
+		}
 		return g;
 	}
 
@@ -40,12 +39,15 @@ public class PrimitiveRootSearch {
 	private static Set<BigInteger> findPrimeFactors(BigInteger n) {
 		// Set is unique
 		Set<BigInteger> factors = new HashSet<BigInteger>();
-		for (long i = 2; i <= n.longValue(); i++) {
-			BigInteger y = BigInteger.valueOf(i);
-			while (n.mod(y).equals(BigInteger.ZERO)) {
+		for (BigInteger i = BigInteger.valueOf(2); i.compareTo(n) <= 0; i = i
+				.add(BigInteger.ONE)) {
+			while (n.mod(i).equals(BigInteger.ZERO)) {
 				// Add y to factors and decrease n
-				factors.add(y);
-				n = n.divide(y);
+				factors.add(i);
+				n = n.divide(i);
+				// This should speed things up a bit for very large numbers!
+				if (MillerRabin.testStrongPrime(n))
+					return factors;
 			}
 		}
 		return factors;

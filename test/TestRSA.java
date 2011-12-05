@@ -37,19 +37,21 @@ public class TestRSA {
 	@Test
 	public void testRSAGenerated() {
 		try {
-			String message = "2";
+			for (int i = 0; i < 10; i++) {
+				String message = "12345";
 
-			RSA rsaGen = new RSA();
-			RSA rsa2Gen = new RSA();
+				RSA rsaGen = new RSA();
+				RSA rsa2Gen = new RSA();
 
-			// Encrypt message
-			rsaGen.setPublicInfo(rsa2Gen.getEncryptionKey(), rsa2Gen.getN());
-			BigInteger encryptedMessage = rsaGen.encrypt(message);
+				// Encrypt message
+				rsaGen.setPublicInfo(rsa2Gen.getEncryptionKey(), rsa2Gen.getN());
+				BigInteger encryptedMessage = rsaGen.encrypt(message);
 
-			// Decrypt message
-			String decryptedMessage = rsa2Gen.decrypt(encryptedMessage
-					.toString());
-			assertEquals(message, decryptedMessage);
+				// Decrypt message
+				String decryptedMessage = rsa2Gen.decrypt(encryptedMessage
+						.toString());
+				assertEquals(message, decryptedMessage);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			assertTrue(false);

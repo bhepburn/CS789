@@ -9,8 +9,6 @@ public class TestMillerRabin {
 
 	@Test
 	public void testTest() {
-		assertTrue(Util.isPrimeBruteForce(BigInteger.valueOf(44381)));
-		
 		assertFalse(MillerRabin.testStrongPrime(BigInteger.valueOf(221)));
 		assertFalse(MillerRabin.testStrongPrime(BigInteger.valueOf(49)));
 		assertTrue(MillerRabin.testStrongPrime(BigInteger.valueOf(5)));
@@ -29,5 +27,7 @@ public class TestMillerRabin {
 		assertTrue(MillerRabin.testStrongPrime(BigInteger.valueOf(61843)));
 		assertFalse(MillerRabin.testStrongPrime(BigInteger.valueOf(9897)));
 		assertTrue(MillerRabin.testStrongPrime(BigInteger.valueOf(104491)));
+		assertFalse(MillerRabin.testStrongPrime(new BigInteger(
+				"15364942138330601650")));
 	}
 }

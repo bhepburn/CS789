@@ -7,8 +7,8 @@ public class RSA extends CryptographyMethod {
 	private BigInteger p, q, e, n;
 
 	public RSA() {
-		p = BlumBlumShub.randomNumber();
-		q = BlumBlumShub.randomNumber();
+		p = BlumBlumShub.randomStrongPrime();
+		q = BlumBlumShub.randomStrongPrime();
 
 		n = p.multiply(q);
 
@@ -169,7 +169,6 @@ public class RSA extends CryptographyMethod {
 	public void showPrivateInfo() {
 		System.out.println();
 		System.out.println("Private info:" + "\n\tp=" + p + "\n\tq=" + q);
-		System.out.println();
 	}
 
 	@Override
@@ -177,6 +176,5 @@ public class RSA extends CryptographyMethod {
 		System.out.println();
 		System.out.println("Public info:" + "\n\te (encryption key)=" + e
 				+ "\n\tn=" + n);
-		System.out.println();
 	}
 }

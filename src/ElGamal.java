@@ -8,13 +8,16 @@ public class ElGamal extends CryptographyMethod {
 			sharedKey;
 
 	public ElGamal() throws Exception {
-		cyclicGroup = BlumBlumShub.randomNumber();
 
+		cyclicGroup = BlumBlumShub.randomStrongPrime();
 		do {
-			privateKey = BlumBlumShub.randomNumber();
+			privateKey = BlumBlumShub.randomStrongPrime();
 		} while (privateKey.compareTo(cyclicGroup) >= 0);
 
+		// Find a primitive root in the group
 		primitiveRoot = PrimitiveRootSearch.primitiveRootSearch(cyclicGroup);
+
+		// Find public key by doing primitive root to the power of private key
 		publicKey = FastExponentiation.fastExponentiation(primitiveRoot,
 				privateKey, cyclicGroup);
 	}

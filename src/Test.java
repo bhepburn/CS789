@@ -17,8 +17,10 @@ public class Test {
 				input = in.readLine();
 				int choice = Integer.parseInt(input);
 				if (choice == 1) {
+					System.out.println("Generating initial data...");
 					choice(new RSA(), in);
 				} else if (choice == 2) {
+					System.out.println("Generating initial data...");
 					choice(new ElGamal(), in);
 				} else {
 					exit = true;
@@ -35,7 +37,7 @@ public class Test {
 		boolean exit = false;
 		while (!exit) {
 			try {
-				System.out.print("\n\n" + method.getClass().getName()
+				System.out.print("\n" + method.getClass().getName()
 						+ ": Would you like to (1) encrypt, (2) decrypt, "
 						+ "(3) display private info, (4) show public info,"
 						+ " or (5) to exit? ");
