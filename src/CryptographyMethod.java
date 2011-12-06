@@ -2,11 +2,11 @@ import java.io.BufferedReader;
 
 public abstract class CryptographyMethod {
 
-	public abstract void encrypt(BufferedReader in) throws Exception;
+	public abstract void encryptInput(BufferedReader in) throws Exception;
 
-	public abstract void decrypt(BufferedReader in) throws Exception;
+	public abstract void decryptInput(BufferedReader in) throws Exception;
 
-	public abstract void attack(BufferedReader in) throws Exception;
+	public abstract void attackInput(BufferedReader in) throws Exception;
 	
 	public abstract void showPrivateInfo();
 	

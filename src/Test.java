@@ -44,15 +44,15 @@ public class Test {
 				String input = in.readLine();
 				int choice = Integer.parseInt(input);
 				if (choice == 1) {
-					method.encrypt(in);
+					method.encryptInput(in);
 				} else if (choice == 2) {
-					method.decrypt(in);
+					method.decryptInput(in);
 				} else if (choice == 3) {
 					method.showPrivateInfo();
 				} else if (choice == 4) {
 					method.showPublicInfo();
 				} else if (choice == 5) {
-					method.attack(in);
+					method.attackInput(in);
 				} else if (choice == 6) {
 					exit = true;
 				} else {

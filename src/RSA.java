@@ -70,7 +70,7 @@ public class RSA extends CryptographyMethod {
 		if (e == null || n == null) {
 			throw new Exception("Missing public information");
 		}
-
+		// I will let the input functions convert string to big integer
 		// BigInteger encodedMessage = Util.convertStringToBigInt(message);
 		BigInteger encodedMessage = new BigInteger(message);
 		if (encodedMessage.compareTo(n) != -1) {
@@ -95,7 +95,7 @@ public class RSA extends CryptographyMethod {
 	}
 
 	@Override
-	public void encrypt(BufferedReader in) throws Exception {
+	public void encryptInput(BufferedReader in) throws Exception {
 		try {
 			System.out.println();
 			showPublicInfo();
@@ -128,7 +128,7 @@ public class RSA extends CryptographyMethod {
 	}
 
 	@Override
-	public void decrypt(BufferedReader in) throws Exception {
+	public void decryptInput(BufferedReader in) throws Exception {
 		try {
 			System.out.println();
 			showPublicInfo();
@@ -166,7 +166,7 @@ public class RSA extends CryptographyMethod {
 	}
 
 	@Override
-	public void attack(BufferedReader in) throws Exception {
+	public void attackInput(BufferedReader in) throws Exception {
 
 	}
 

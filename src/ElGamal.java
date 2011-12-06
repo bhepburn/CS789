@@ -75,7 +75,7 @@ public class ElGamal extends CryptographyMethod {
 	}
 
 	@Override
-	public void encrypt(BufferedReader in) throws Exception {
+	public void encryptInput(BufferedReader in) throws Exception {
 		try {
 			System.out.println();
 			showPublicInfo();
@@ -114,7 +114,7 @@ public class ElGamal extends CryptographyMethod {
 	}
 
 	@Override
-	public void decrypt(BufferedReader in) throws Exception {
+	public void decryptInput(BufferedReader in) throws Exception {
 		try {
 			System.out.println();
 			showPublicInfo();
@@ -152,7 +152,7 @@ public class ElGamal extends CryptographyMethod {
 	}
 
 	@Override
-	public void attack(BufferedReader in) throws Exception {
+	public void attackInput(BufferedReader in) throws Exception {
 		try {
 			// Get value of n (modulus)
 			System.out.print("Enter p (cyclic group):");
