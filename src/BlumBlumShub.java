@@ -1,10 +1,9 @@
-import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
 
 public class BlumBlumShub {
 
 	// Larger bit size is stalling prime factorization in primitive root search
-	private static final int BIT_SIZE = 64;
+	private static final int BIT_SIZE = 128;
 	private static BigInteger n;
 
 	// Value of n can be used so lets generate once run
@@ -26,31 +25,31 @@ public class BlumBlumShub {
 	}
 
 	private static BigInteger randomNumber() {
-		// Lets find a seed signically smaller than p*q
-		BigInteger seed = Util.randomBigInteger(BIT_SIZE, BIT_SIZE);
-		System.out.println(seed);
+		// Lets find a seed signically smaller than p*q and relatively prime
+		BigInteger seed;
+		do {
+			seed = Util.randomBigInteger(BIT_SIZE, BIT_SIZE);
+		} while (!Euclidean.euclidean(seed, n).equals(BigInteger.ONE));
 
-		ByteArrayOutputStream alist = new ByteArrayOutputStream();
+		byte[] bytes = new byte[BIT_SIZE / 8];
 		for (int i = 0; i < BIT_SIZE; i++) {
-			int b = 0;
-			for (int j = 7; j >= 0; j--) {
-				// x[n+1] = x[n]^2 mod n
-				seed = FastExponentiation.fastExponentiation(seed, Util.TWO, n);
-				if (seed.testBit(0))
-					b |= (1 << j);
-			}
-
-			alist.write(b);
+			// if seed % 2 = 1 set the bit otherwise leave it zero
+			if (seed.mod(Util.TWO).equals(BigInteger.ONE))
+				bytes[bytes.length - i / 8 - 1] |= 1 << (i % 8);
+			// compute next value
+			seed = FastExponentiation.fastExponentiation(seed, Util.TWO, n);
 		}
-		return new BigInteger(1, alist.toByteArray());
+
+		return new BigInteger(1, bytes);
 	}
 
 	public static BigInteger randomStrongPrime() {
-		BigInteger p;
+		BigInteger rand;
 		do {
-			p = Util.randomBigInteger(BIT_SIZE, BIT_SIZE);
-		} while (!MillerRabin.testStrongPrime(p)
-				|| !p.mod(Util.FOUR).equals(Util.THREE));
-		return p;
+			rand = randomNumber();
+		} while (!MillerRabin.testStrongPrime(rand)
+				|| !rand.mod(Util.FOUR).equals(Util.THREE));
+		System.out.println(rand);
+		return rand;
 	}
 }

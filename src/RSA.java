@@ -66,20 +66,18 @@ public class RSA extends CryptographyMethod {
 		return p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
 	}
 
-	public BigInteger encrypt(String message) throws Exception {
+	public BigInteger encrypt(BigInteger message) throws Exception {
 		if (e == null || n == null) {
 			throw new Exception("Missing public information");
 		}
-		// I will let the input functions convert string to big integer
-		// BigInteger encodedMessage = Util.convertStringToBigInt(message);
-		BigInteger encodedMessage = new BigInteger(message);
-		if (encodedMessage.compareTo(n) != -1) {
+
+		if (message.compareTo(n) != -1) {
 			throw new Exception("Message too large for public key!");
 		}
-		return FastExponentiation.fastExponentiation(encodedMessage, e, n);
+		return FastExponentiation.fastExponentiation(message, e, n);
 	}
 
-	public String decrypt(String message) throws Exception {
+	public BigInteger decrypt(BigInteger message) throws Exception {
 		if (p == null || q == null) {
 			throw new Exception("Missing private information");
 		} else if (e == null) {
@@ -88,10 +86,10 @@ public class RSA extends CryptographyMethod {
 
 		BigInteger val = Euclidean.extendedEuclidean(phiOfN(), e)[1]
 				.mod(phiOfN());
-		BigInteger result = FastExponentiation.fastExponentiation(
-				new BigInteger(message), val, n);
-		// return Util.convertBigIntToString(result);
-		return result.toString();
+		BigInteger result = FastExponentiation.fastExponentiation(message, val,
+				n);
+
+		return result;
 	}
 
 	@Override
@@ -120,8 +118,27 @@ public class RSA extends CryptographyMethod {
 			System.out.print("Enter in message: ");
 			input = in.readLine();
 
+			BigInteger message;
+			try {
+				message = new BigInteger(input);
+				// We found an integer lets see if user wants to use ASCII
+				System.out.print("Integer entered would you like to "
+						+ "convert to ASCII, type 'Y' for ASCII mode? ");
+				input = in.readLine();
+
+				// User wanted ASCII so lets convert
+				if (input.equals("Y")) {
+					message = Util.convertStringToBigInt(message.toString());
+					System.out.println("Converting string to integer"
+							+ " using ASCII - " + message);
+				}
+			} catch (Exception e) {
+				System.out.println("Converting string to integer using ASCII!");
+				message = Util.convertStringToBigInt(input);
+			}
+
 			// Encrypt and provide message
-			System.out.println("\nEncrypted Message = " + encrypt(input));
+			System.out.println("\nEncrypted Message = " + encrypt(message));
 		} catch (IOException e) {
 			throw new Exception("Bad input");
 		}
@@ -158,8 +175,14 @@ public class RSA extends CryptographyMethod {
 			// Get the message
 			System.out.print("Enter in encrypted message: ");
 			input = in.readLine();
+			
+			
+			BigInteger result = decrypt(new BigInteger(input));
 
-			System.out.println("\nDecrypted message = " + decrypt(input));
+			System.out.println("\nDecrypted message: "
+					+ "\n\tMessage as number=" + result
+					+ "\n\tMessage as text using ASCII="
+					+ Util.convertBigIntToString(result));
 		} catch (IOException e) {
 			throw new Exception("Bad input");
 		}
@@ -179,7 +202,7 @@ public class RSA extends CryptographyMethod {
 	@Override
 	public void showPublicInfo() {
 		System.out.println();
-		System.out.println("Public info:" + "\n\te (encryption key) = " + e
-				+ "\n\tn = " + n);
+		System.out.println("Public info:" + "\n\tn = " + n
+				+ "\n\te (encryption key) = " + e);
 	}
 }

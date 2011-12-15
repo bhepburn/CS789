@@ -10,7 +10,7 @@ public class TestRSA {
 	@Test
 	public void testRSA() {
 		try {
-			String message = "7654";
+			BigInteger message = BigInteger.valueOf(12345);
 
 			RSA rsa = new RSA();
 			BigInteger p = BigInteger.valueOf(937);
@@ -25,7 +25,7 @@ public class TestRSA {
 			BigInteger encryptedMessage = rsa2.encrypt(message);
 
 			// Decrypt message
-			String decryptedMessage = rsa.decrypt(encryptedMessage.toString());
+			BigInteger decryptedMessage = rsa.decrypt(encryptedMessage);
 			assertEquals(message, decryptedMessage);
 
 		} catch (Exception e) {
@@ -38,7 +38,7 @@ public class TestRSA {
 	public void testRSAGenerated() {
 		try {
 			for (int i = 0; i < 10; i++) {
-				String message = "12345";
+				BigInteger message = BigInteger.valueOf(54321);
 
 				RSA rsaGen = new RSA();
 				RSA rsa2Gen = new RSA();
@@ -48,8 +48,7 @@ public class TestRSA {
 				BigInteger encryptedMessage = rsaGen.encrypt(message);
 
 				// Decrypt message
-				String decryptedMessage = rsa2Gen.decrypt(encryptedMessage
-						.toString());
+				BigInteger decryptedMessage = rsa2Gen.decrypt(encryptedMessage);
 				assertEquals(message, decryptedMessage);
 			}
 		} catch (Exception e) {
