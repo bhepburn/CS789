@@ -7,19 +7,8 @@ public class ElGamal extends CryptographyMethod {
 	private BigInteger cyclicGroup, primitiveRoot, privateKey, publicKey,
 			sharedKey;
 
-	public ElGamal() throws Exception {
-
-		cyclicGroup = BlumBlumShub.randomStrongPrime();
-		do {
-			privateKey = BlumBlumShub.randomStrongPrime();
-		} while (privateKey.compareTo(cyclicGroup) >= 0);
-
-		// Find a primitive root in the group
-		primitiveRoot = PrimitiveRootSearch.primitiveRootSearch(cyclicGroup);
-
-		// Find public key by doing primitive root to the power of private key
-		publicKey = FastExponentiation.fastExponentiation(primitiveRoot,
-				privateKey, cyclicGroup);
+	public ElGamal() {
+		generateNewData();
 	}
 
 	public BigInteger getCyclicGroup() {
@@ -181,9 +170,10 @@ public class ElGamal extends CryptographyMethod {
 				this.publicKey = sharedKey;
 				this.privateKey = privateKey;
 
+				System.out.println("\nBest guess for private key = "
+						+ privateKey);
 				System.out
-						.println("\nBest guess for private key = " + privateKey);
-				System.out.println("Best guess for message = " + decrypt(input));
+						.println("Best guess for message = " + decrypt(input));
 			} else {
 				System.out.println("Could not find private key");
 			}
@@ -207,5 +197,29 @@ public class ElGamal extends CryptographyMethod {
 				+ cyclicGroup + "\n\tb (primitive root) = " + primitiveRoot
 				+ "\n\tmy public key = " + publicKey);
 		System.out.println();
+	}
+
+	@Override
+	public void generateNewData() {
+		boolean failed = true;
+		while (failed) {
+			cyclicGroup = BlumBlumShub.randomStrongPrime();
+			do {
+				privateKey = BlumBlumShub.randomStrongPrime();
+			} while (privateKey.compareTo(cyclicGroup) >= 0);
+
+			// Find a primitive root in the group
+			try {
+				primitiveRoot = PrimitiveRootSearch
+						.primitiveRootSearch(cyclicGroup);
+
+				// Public key is primitive root to the power of private key
+				publicKey = FastExponentiation.fastExponentiation(
+						primitiveRoot, privateKey, cyclicGroup);
+				failed = false;
+			} catch (Exception e) {
+				// Do nothing lets just generate another cyclic group
+			}
+		}
 	}
 }

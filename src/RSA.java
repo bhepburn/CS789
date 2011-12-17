@@ -7,16 +7,7 @@ public class RSA extends CryptographyMethod {
 	private BigInteger p, q, e, n;
 
 	public RSA() {
-		p = BlumBlumShub.randomStrongPrime();
-		q = BlumBlumShub.randomStrongPrime();
-
-		n = p.multiply(q);
-
-		// e needs to be relatively prime to phi(n)
-		do {
-			// Find an encryption key between 1 and n inclusive
-			e = Util.randomBigInteger(Util.TWO, n.subtract(BigInteger.ONE));
-		} while (!Euclidean.euclidean(e, phiOfN()).equals(BigInteger.ONE));
+		generateNewData();
 	}
 
 	public void setPrivateInfo(BigInteger p, BigInteger q) throws Exception {
@@ -175,8 +166,7 @@ public class RSA extends CryptographyMethod {
 			// Get the message
 			System.out.print("Enter in encrypted message: ");
 			input = in.readLine();
-			
-			
+
 			BigInteger result = decrypt(new BigInteger(input));
 
 			System.out.println("\nDecrypted message: "
@@ -190,6 +180,46 @@ public class RSA extends CryptographyMethod {
 
 	@Override
 	public void attackInput(BufferedReader in) throws Exception {
+		// Get value of n (modulus)
+		System.out.print("Enter public value of n:");
+		String input = in.readLine();
+		BigInteger modulus = new BigInteger(input);
+
+		// Get encryption key
+		System.out.print("Enter encryption key:");
+		input = in.readLine();
+		BigInteger encryptionKey = new BigInteger(input);
+		setPublicInfo(encryptionKey, modulus);
+
+		// Get the message
+		System.out.print("Enter in encrypted message: ");
+		input = in.readLine();
+
+		try {
+			BigInteger privP = PollardRhoMethod.pollardRhoMethod(modulus);
+			BigInteger privQ = modulus.divide(privP);
+
+			if (privP.multiply(privQ).compareTo(modulus) != 0) {
+				System.out
+						.println("n has more than 2 factors!  Cannot decrypt!");
+				return;
+			}
+
+			setPrivateInfo(privP, privQ);
+			setEncryptionKey(encryptionKey);
+
+			BigInteger result = decrypt(new BigInteger(input));
+
+			showPrivateInfo();
+			System.out.println("\nDecrypted message: "
+					+ "\n\tMessage as number=" + result
+					+ "\n\tMessage as text using ASCII="
+					+ Util.convertBigIntToString(result));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
 
 	}
 
@@ -204,5 +234,19 @@ public class RSA extends CryptographyMethod {
 		System.out.println();
 		System.out.println("Public info:" + "\n\tn = " + n
 				+ "\n\te (encryption key) = " + e);
+	}
+
+	@Override
+	public void generateNewData() {
+		p = BlumBlumShub.randomStrongPrime();
+		q = BlumBlumShub.randomStrongPrime();
+
+		n = p.multiply(q);
+
+		// e needs to be relatively prime to phi(n)
+		do {
+			// Find an encryption key between 1 and n inclusive
+			e = Util.randomBigInteger(Util.TWO, n.subtract(BigInteger.ONE));
+		} while (!Euclidean.euclidean(e, phiOfN()).equals(BigInteger.ONE));
 	}
 }

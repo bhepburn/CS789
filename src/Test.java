@@ -17,10 +17,12 @@ public class Test {
 				input = in.readLine();
 				int choice = Integer.parseInt(input);
 				if (choice == 1) {
-					System.out.println("Generating initial data...");
+					System.out.println("\nGenerating initial "
+							+ "private/public data...");
 					choice(new RSA(), in);
 				} else if (choice == 2) {
-					System.out.println("Generating initial data...");
+					System.out.println("\nGenerating initial "
+							+ "private/public data...");
 					choice(new ElGamal(), in);
 				} else {
 					exit = true;
@@ -39,8 +41,10 @@ public class Test {
 			try {
 				System.out.print("\n" + method.getClass().getName()
 						+ ": Would you like to (1) encrypt, (2) decrypt, "
-						+ "(3) display private info, (4) show public info, "
-						+ "(5) attack message, or (6) to exit? ");
+						+ "(3) display private info, "
+						+ "(4) show public info, " + "(5) attack message, "
+						+ "(6) generate random private/public data, "
+						+ "or (7) to exit? ");
 				String input = in.readLine();
 				int choice = Integer.parseInt(input);
 				if (choice == 1) {
@@ -54,6 +58,11 @@ public class Test {
 				} else if (choice == 5) {
 					method.attackInput(in);
 				} else if (choice == 6) {
+					System.out.println("\nGenerating random "
+							+ "private/public data...");
+					method.generateNewData();
+					method.showPublicInfo();
+				} else if (choice == 7) {
 					exit = true;
 				} else {
 					System.out.println("Invalid input!");

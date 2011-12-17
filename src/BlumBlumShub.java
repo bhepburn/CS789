@@ -49,7 +49,6 @@ public class BlumBlumShub {
 			rand = randomNumber();
 		} while (!MillerRabin.testStrongPrime(rand)
 				|| !rand.mod(Util.FOUR).equals(Util.THREE));
-		System.out.println(rand);
 		return rand;
 	}
 }
