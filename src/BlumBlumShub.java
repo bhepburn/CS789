@@ -3,10 +3,10 @@ import java.math.BigInteger;
 public class BlumBlumShub {
 
 	// Larger bit size is stalling prime factorization in primitive root search
-	private static final int BIT_SIZE = 128;
-	private static BigInteger n;
+	private static final int BIT_SIZE = 64;
 
-	// Value of n can be used so lets generate once run
+	// Value of n can be reused so lets generate once per java runtime
+	private static BigInteger n;
 	static {
 		BigInteger p, q;
 		// Look for a prime (p) thats 3mod4

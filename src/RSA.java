@@ -75,10 +75,10 @@ public class RSA extends CryptographyMethod {
 			throw new Exception("Missing public information");
 		}
 
-		BigInteger val = Euclidean.extendedEuclidean(phiOfN(), e)[1]
+		BigInteger d = Euclidean.extendedEuclidean(phiOfN(), e)[1]
 				.mod(phiOfN());
-		BigInteger result = FastExponentiation.fastExponentiation(message, val,
-				n);
+		BigInteger result = FastExponentiation
+				.fastExponentiation(message, d, n);
 
 		return result;
 	}
