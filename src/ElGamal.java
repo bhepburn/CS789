@@ -249,11 +249,8 @@ public class ElGamal extends CryptographyMethod {
 	}
 
 	private BigInteger generateNewPrivateKey() {
-		BigInteger val = null;
-		do {
-			val = BlumBlumShub.randomStrongPrime();
-		} while (val.compareTo(cyclicGroup) >= 0);
-		return val;
+		return Util.randomBigInteger(Util.TWO,
+				cyclicGroup.subtract(BigInteger.ONE));
 	}
 
 	@Override
