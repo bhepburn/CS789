@@ -1,5 +1,6 @@
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import java.math.BigInteger;
 
 import org.junit.Test;
 
@@ -8,7 +9,7 @@ public class TestElGamal {
 	@Test
 	public void testElGamal() {
 		try {
-			String msg = "12345";
+			BigInteger msg = BigInteger.valueOf(321);
 			ElGamal elGamal = new ElGamal();
 			ElGamal elGamal2 = new ElGamal();
 
@@ -22,10 +23,10 @@ public class TestElGamal {
 			elGamal.setSharedKey(elGamal2.getPublicKey());
 
 			// Encrypt a message
-			String encryptedValue = elGamal2.encrypt(msg);
+			BigInteger encryptedValue = elGamal2.encrypt(msg);
 
 			// Decrypt the message
-			String decryptedValue = elGamal.decrypt(encryptedValue);
+			BigInteger decryptedValue = elGamal.decrypt(encryptedValue);
 
 			// Verify the result
 			assertEquals(msg, decryptedValue);

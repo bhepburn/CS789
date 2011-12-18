@@ -3,7 +3,6 @@ import java.math.BigInteger;
 public class PollardRhoMethod {
 
 	public static BigInteger pollardRhoMethod(BigInteger n) throws Exception {
-
 		BigInteger x = Util.TWO;
 		BigInteger y = (x.pow(2)).add(BigInteger.ONE);
 

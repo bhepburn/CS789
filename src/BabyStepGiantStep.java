@@ -9,7 +9,7 @@ public class BabyStepGiantStep {
 
 		// Setup sorted map of b^(0...m)
 		SortedMap<BigInteger, BigInteger> map = new TreeMap<BigInteger, BigInteger>();
-		BigInteger m = Util.getSqRoot(cyclicGroup);
+		BigInteger m = Util.getSqRoot(cyclicGroup.subtract(BigInteger.ONE));
 		for (BigInteger i = BigInteger.ZERO; i.compareTo(m) < 0; i = i
 				.add(BigInteger.ONE)) {
 			map.put(FastExponentiation.fastExponentiation(primitiveRoot, i,

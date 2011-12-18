@@ -40,27 +40,32 @@ public class ElGamal extends CryptographyMethod {
 		this.sharedKey = sharedKey;
 	}
 
-	public String encrypt(String msg) throws Exception {
-		// BigInteger val = Util.convertStringToBigInt(msg);
-		BigInteger val = new BigInteger(msg);
-		if (val.compareTo(cyclicGroup) != -1) {
+	public BigInteger encrypt(BigInteger msg) throws Exception {
+		// Make sure message is smaller than the group
+		if (msg.compareTo(cyclicGroup) != -1) {
 			throw new Exception("Message too large for public key!");
+		}
+		// Make sure public key is smaller than the group
+		if (sharedKey.compareTo(cyclicGroup) != -1) {
+			throw new Exception("Shared key too large for public n!");
+		}
+		// Make sure private key is smaller than the group
+		if (privateKey.compareTo(cyclicGroup) != -1) {
+			System.out.println(privateKey);
+			throw new Exception("Private key too large for public n!");
 		}
 
 		BigInteger encryptionKey = FastExponentiation.fastExponentiation(
 				sharedKey, privateKey, cyclicGroup);
-		return val.multiply(encryptionKey).mod(cyclicGroup).toString();
+		return msg.multiply(encryptionKey).mod(cyclicGroup);
 	}
 
-	public String decrypt(String msg) {
-		BigInteger value = new BigInteger(msg);
+	public BigInteger decrypt(BigInteger msg) {
 		BigInteger decryptionKey = FastExponentiation.fastExponentiation(
 				sharedKey,
 				cyclicGroup.subtract(BigInteger.ONE).subtract(privateKey),
 				cyclicGroup);
-		// return Util.convertBigIntToString(value.multiply(decryptionKey).mod(
-		// cyclicGroup));
-		return value.multiply(decryptionKey).mod(cyclicGroup).toString();
+		return msg.multiply(decryptionKey).mod(cyclicGroup);
 	}
 
 	@Override
@@ -83,6 +88,7 @@ public class ElGamal extends CryptographyMethod {
 				BigInteger primitiveRoot = new BigInteger(input);
 
 				setPublicInfo(cyclicGroup, primitiveRoot);
+				setPrivateInfo(generateNewPrivateKey());
 			}
 
 			System.out.print("Enter shared public key:");
@@ -94,9 +100,28 @@ public class ElGamal extends CryptographyMethod {
 			System.out.print("Enter in message: ");
 			input = in.readLine();
 
+			BigInteger message;
+			try {
+				message = new BigInteger(input);
+				// We found an integer lets see if user wants to use ASCII
+				System.out.print("Integer entered would you like to "
+						+ "convert to ASCII, type 'Y' for ASCII mode? ");
+				input = in.readLine();
+
+				// User wanted ASCII so lets convert
+				if (input.equals("Y")) {
+					message = Util.convertStringToBigInt(message.toString());
+					System.out.println("Converting string to integer"
+							+ " using ASCII - " + message);
+				}
+			} catch (Exception e) {
+				System.out.println("Converting string to integer using ASCII!");
+				message = Util.convertStringToBigInt(input);
+			}
+
 			// Encrypt and provide message and public key
 			System.out.println("\nNew public key = " + publicKey);
-			System.out.println("Encrypted pessage = " + encrypt(input));
+			System.out.println("Encrypted message = " + encrypt(message));
 		} catch (IOException e) {
 			throw new Exception("Bad input");
 		}
@@ -122,7 +147,12 @@ public class ElGamal extends CryptographyMethod {
 				input = in.readLine();
 				BigInteger primitiveRoot = new BigInteger(input);
 
+				System.out.print("Enter private key:");
+				input = in.readLine();
+				BigInteger privateKey = new BigInteger(input);
+
 				setPublicInfo(cyclicGroup, primitiveRoot);
+				setPrivateInfo(privateKey);
 			}
 
 			System.out.print("Enter shared public key:");
@@ -133,8 +163,13 @@ public class ElGamal extends CryptographyMethod {
 			// Get the message
 			System.out.print("Enter in encrypted message: ");
 			input = in.readLine();
+			BigInteger msg = new BigInteger(input);
 
-			System.out.println("\nDecrypted message = " + decrypt(input));
+			BigInteger message = decrypt(msg);
+			System.out.println("\nDecrypted message: "
+					+ "\n\tMessage as number=" + message
+					+ "\n\tMessage as text using ASCII="
+					+ Util.convertBigIntToString(message));
 		} catch (IOException e) {
 			throw new Exception("Bad input");
 		}
@@ -148,34 +183,48 @@ public class ElGamal extends CryptographyMethod {
 			String input = in.readLine();
 			BigInteger cyclicGroup = new BigInteger(input);
 
+			// Get value of pimitive root
 			System.out.print("Enter b (primitive root):");
 			input = in.readLine();
 			BigInteger primitiveRoot = new BigInteger(input);
 
-			System.out.print("Enter shared public key:");
+			// Get shared public key
+			System.out.print("Enter shared public key of person encrypting:");
 			input = in.readLine();
-			BigInteger sharedKey = new BigInteger(input);
+			BigInteger publicKeyEnc = new BigInteger(input);
+
+			// Get public key
+			System.out.print("Enter shared public key of person decrypting:");
+			input = in.readLine();
+			BigInteger publicKeyDec = new BigInteger(input);
 
 			// Get the message
 			System.out.print("Enter in encrypted message: ");
 			input = in.readLine();
+			BigInteger msg = new BigInteger(input);
 
 			// Call baby-step giant-step algorithm
 			BigInteger privateKey = BabyStepGiantStep.babyStepGiantStep(
-					cyclicGroup, primitiveRoot, sharedKey);
+					cyclicGroup, primitiveRoot, publicKeyDec);
 
+			// Make sure we found a private key
 			if (privateKey != null) {
 				this.cyclicGroup = cyclicGroup;
 				this.primitiveRoot = primitiveRoot;
-				this.publicKey = sharedKey;
+				this.sharedKey = publicKeyEnc;
+				this.publicKey = publicKeyDec;
 				this.privateKey = privateKey;
 
+				// Decrypt the message and attack
 				System.out.println("\nBest guess for private key = "
 						+ privateKey);
-				System.out
-						.println("Best guess for message = " + decrypt(input));
+				BigInteger message = decrypt(msg);
+				System.out.println("\nBest guess for decrypted message: "
+						+ "\n\tMessage as number=" + message
+						+ "\n\tMessage as text using ASCII="
+						+ Util.convertBigIntToString(message));
 			} else {
-				System.out.println("Could not find private key");
+				System.out.println("Could not find private key for attack!");
 			}
 		} catch (IOException e) {
 			throw new Exception("Bad input");
@@ -199,14 +248,20 @@ public class ElGamal extends CryptographyMethod {
 		System.out.println();
 	}
 
+	private BigInteger generateNewPrivateKey() {
+		BigInteger val = null;
+		do {
+			val = BlumBlumShub.randomStrongPrime();
+		} while (val.compareTo(cyclicGroup) >= 0);
+		return val;
+	}
+
 	@Override
 	public void generateNewData() {
 		boolean failed = true;
 		while (failed) {
 			cyclicGroup = BlumBlumShub.randomStrongPrime();
-			do {
-				privateKey = BlumBlumShub.randomStrongPrime();
-			} while (privateKey.compareTo(cyclicGroup) >= 0);
+			privateKey = generateNewPrivateKey();
 
 			// Find a primitive root in the group
 			try {

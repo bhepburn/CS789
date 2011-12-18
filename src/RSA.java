@@ -62,9 +62,15 @@ public class RSA extends CryptographyMethod {
 			throw new Exception("Missing public information");
 		}
 
+		// Make sure message key is smaller than n
 		if (message.compareTo(n) != -1) {
 			throw new Exception("Message too large for public key!");
 		}
+		// Make sure encryption key is smaller than n
+		if (e.compareTo(n) != -1) {
+			throw new Exception("Encryption too large for public n!");
+		}
+
 		return FastExponentiation.fastExponentiation(message, e, n);
 	}
 
@@ -73,6 +79,15 @@ public class RSA extends CryptographyMethod {
 			throw new Exception("Missing private information");
 		} else if (e == null) {
 			throw new Exception("Missing public information");
+		}
+
+		// Make sure message is small enough
+		if (message.compareTo(n) != -1) {
+			throw new Exception("Message too large for public n!");
+		}
+		// Make sure e is small enough
+		if (e.compareTo(n) != -1) {
+			throw new Exception("Encryption too large for public n!");
 		}
 
 		BigInteger d = Euclidean.extendedEuclidean(phiOfN(), e)[1]
@@ -199,26 +214,19 @@ public class RSA extends CryptographyMethod {
 			BigInteger privP = PollardRhoMethod.pollardRhoMethod(modulus);
 			BigInteger privQ = modulus.divide(privP);
 
-			if (privP.multiply(privQ).compareTo(modulus) != 0) {
-				System.out
-						.println("n has more than 2 factors!  Cannot decrypt!");
-				return;
-			}
-
 			setPrivateInfo(privP, privQ);
 			setEncryptionKey(encryptionKey);
 
 			BigInteger result = decrypt(new BigInteger(input));
 
 			showPrivateInfo();
-			System.out.println("\nDecrypted message: "
+			System.out.println("\nBest guess for decrypted message: "
 					+ "\n\tMessage as number=" + result
 					+ "\n\tMessage as text using ASCII="
 					+ Util.convertBigIntToString(result));
 
 		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println(e.getMessage());
+			System.out.println("\n" + e.getMessage());
 		}
 
 	}
