@@ -7,8 +7,7 @@ public class PollardRhoMethod {
 		BigInteger y = (x.pow(2)).add(BigInteger.ONE);
 
 		while (true) {
-			BigInteger g = Euclidean.euclidean(y.subtract(x), n);
-
+			BigInteger g = Euclidean.euclidean(x.subtract(y).abs(), n);
 			if (g.compareTo(BigInteger.ONE) != 0 && g.compareTo(n) != 0) {
 				return g;
 			} else if (g.equals(BigInteger.ONE)) {
