@@ -1,0 +1,30 @@
+To run the application code:
+- Open up a command prompt on any machine with a Java runtime installed.
+- Once the command prompt is open run the following command from the root of the folder containing the executable jar.
+java -jar CS789-BrentHepburn.jar
+- When the application starts you will see the following message:
+"Please choose an cryptography method by choosing (1) RSA or (2) El Gamal (any other input will exit):"
+- Follow the menus and choose the options you would like to test.
+
+Information about text encoding:
+- The code was written in a way that it can handle encryption and decryption of both text and integer values.
+- If an integer is entered for encryption the application will prompt if the user would like to convert to ASCII or not.
+- Decryption will display both the integer value and the ASCII value of the decrypted message.
+- To keep things simple the text encoding converts each character to ASCII and then concatenates each value to the previous creating an integer
+- Each character takes up three decimal places
+- Example:
+HI! = 072 073 033 = 72073033
+
+Structure of source:
+- src/Test.java is the main method that handles input from the user and starts up the correct cryptography algorithm.
+- src/RSA.java is the class that handles input for RSA, encryption, decryption, attack, and the generation of random values used in the RSA algorithm
+- src/ElGamal.java is the class that handles input for ElGamal, encryption, decryption, attack, and the generation of random values used in the ElGamal algorithm
+- src/Util.java is a class that handles the ASCII encoding and generation of random numbers using Java libraries
+- src/Euclidean.java is a class that will handle GCD using Euclidean method and Extended Euclidean to solve problems such as finding the inverse
+- src/FastExponentiation.java is a class that can be used to solve the exponentiation of large number modulus another number
+- src/PrimitiveRootSearch.java is a class that will find the prime factors of phi and then choose a random generator from the group
+- src/MillerRabin.java is a class that is used to test if a number is prime by using the Miller-Rabin method for testing primes
+- src/BlumBlumShub.java is a class that is used to generate pseudorandom numbers (can force random numbers to be prime if needed)
+- src/PollardRhoMethod.java is a class that is used to try to find a factor of a large number to attack RSA encryption
+- src/BabyStepGiantStep.java is a class that is used to solve the logarithm of large numbers to attack ElGamal encryption
+- test/* is a set of java unit tests to test the functionality of the classes above to make sure things don't break after changes
