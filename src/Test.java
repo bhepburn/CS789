@@ -11,18 +11,22 @@ public class Test {
 
 		boolean exit = false;
 		while (!exit) {
-			System.out
-					.print("Please choose an cryptography method by choosing (1) RSA or (2) El Gamal (any other input will exit): ");
+			System.out.print("Please choose an cryptography method "
+					+ "by choosing (1) RSA or (2) El Gamal "
+					+ "(any other input will exit): ");
 			try {
 				input = in.readLine();
 				int choice = Integer.parseInt(input);
+				BlumBlumShub.setBitSize(BlumBlumShub.DEFAULT_BIT_SIZE);
 				if (choice == 1) {
 					System.out.println("\nGenerating initial "
-							+ "private/public data...");
+							+ "private/public data (bit size of "
+							+ BlumBlumShub.getBitSize() + ")...");
 					choice(new RSA(), in);
 				} else if (choice == 2) {
 					System.out.println("\nGenerating initial "
-							+ "private/public data...");
+							+ "private/public data (bit size of "
+							+ BlumBlumShub.getBitSize() + ")...");
 					choice(new ElGamal(), in);
 				} else {
 					exit = true;
@@ -58,6 +62,17 @@ public class Test {
 				} else if (choice == 5) {
 					method.attackInput(in);
 				} else if (choice == 6) {
+					System.out.print("\nEnter a integer size in bits "
+							+ "for length of values (anything above "
+							+ "64 bits will incur performance problems):");
+					input = in.readLine();
+					try {
+						int size = Integer.parseInt(input);
+						BlumBlumShub.setBitSize(size);
+					} catch (Exception e) {
+						System.out.println("\nUsing current bit size of: "
+								+ BlumBlumShub.getBitSize() + " bits");
+					}
 					System.out.println("\nGenerating random "
 							+ "private/public data...");
 					method.generateNewData();
