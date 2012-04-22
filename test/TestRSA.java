@@ -3,6 +3,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.math.BigInteger;
 
+import methods.cryptography.RSA;
+
 import org.junit.Test;
 
 public class TestRSA {

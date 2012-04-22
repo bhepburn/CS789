@@ -2,7 +2,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import java.math.BigInteger;
 
+import methods.cryptography.ElGamal;
+
 import org.junit.Test;
+
 
 public class TestElGamal {
 

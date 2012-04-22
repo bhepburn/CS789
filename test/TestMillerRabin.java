@@ -5,6 +5,8 @@ import java.math.BigInteger;
 
 import org.junit.Test;
 
+import functions.MillerRabin;
+
 public class TestMillerRabin {
 
 	@Test

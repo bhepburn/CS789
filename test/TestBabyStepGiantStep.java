@@ -4,6 +4,8 @@ import java.math.BigInteger;
 
 import org.junit.Test;
 
+import functions.BabyStepGiantStep;
+
 public class TestBabyStepGiantStep {
 
 	@Test

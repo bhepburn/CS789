@@ -4,6 +4,8 @@ import java.math.BigInteger;
 
 import org.junit.Test;
 
+import functions.Euclidean;
+
 public class TestEuclidean {
 
 	@Test
@@ -29,6 +31,9 @@ public class TestEuclidean {
 		result = Euclidean.extendedEuclidean(thirteen, five);
 		assertEquals(two, result[0]);
 		assertEquals(negativeFive, result[1]);
+		
+		result = Euclidean.extendedEuclidean(BigInteger.valueOf(44), BigInteger.valueOf(67));
+		System.out.println(result[0].toString());
 	}
 
 }

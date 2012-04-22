@@ -4,6 +4,8 @@ import java.math.BigInteger;
 
 import org.junit.Test;
 
+import functions.FastExponentiation;
+
 public class TestFastExponentiation {
 	@Test
 	public void fastExponentiation() {

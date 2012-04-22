@@ -15,6 +15,10 @@ Information about text encoding:
 - Example:
 HI! = 072 073 033 = 72073033
 
+Other information:
+- The application will prevent you from encrypting messages too large for the public data provided for RSA or ElGamal encryption
+- There are 2 options for encrypting and decrypting data 1) Input your own private/public values 2) Let application generate values itself
+
 Structure of source:
 - src/Test.java is the main method that handles input from the user and starts up the correct cryptography algorithm.
 - src/RSA.java is the class that handles input for RSA, encryption, decryption, attack, and the generation of random values used in the RSA algorithm

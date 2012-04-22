@@ -1,6 +1,9 @@
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+
+import functions.PollardRhoMethod;
+
 import java.math.BigInteger;
 
 public class TestPollardRhoMethod {
