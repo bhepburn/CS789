@@ -13,6 +13,7 @@ public class TestMillerRabin {
 	public void testTest() {
 		assertFalse(MillerRabin.testStrongPrime(BigInteger.valueOf(221)));
 		assertFalse(MillerRabin.testStrongPrime(BigInteger.valueOf(49)));
+		assertFalse(MillerRabin.testStrongPrime(BigInteger.valueOf(53)));
 		assertTrue(MillerRabin.testStrongPrime(BigInteger.valueOf(5)));
 		assertFalse(MillerRabin.testStrongPrime(BigInteger.valueOf(789)));
 		assertFalse(MillerRabin.testStrongPrime(BigInteger.valueOf(1287)));

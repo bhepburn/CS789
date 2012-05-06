@@ -36,4 +36,13 @@ public class MD5 extends HashMethod {
 		}
 		return null;
 	}
+
+	public byte[] calculate32BitDigest() {
+		byte[] digest = calculateDigest();
+		byte[] functionalDigest = new byte[4];
+		for (int i = 0; i < 4; i++) {
+			functionalDigest[i] = digest[i];
+		}
+		return functionalDigest;
+	}
 }
